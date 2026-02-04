@@ -12,6 +12,7 @@
   let board = [];
   let currentPlayer = 'X';
   let gameOver = false;
+  let winningLine = null;
 
   // --- DOM refs (set in init) ---
   let statusEl;
@@ -22,7 +23,10 @@
     for (var i = 0; i < WIN_LINES.length; i++) {
       var line = WIN_LINES[i];
       var a = brd[line[0]], b = brd[line[1]], c = brd[line[2]];
-      if (a && a === b && a === c) return a;
+      if (a && a === b && a === c) {
+        winningLine = line;
+        return a;
+      }
     }
     return null;
   }
@@ -35,6 +39,7 @@
     board = [null, null, null, null, null, null, null, null, null];
     currentPlayer = 'X';
     gameOver = false;
+    winningLine = null;
   }
 
   function updateStatus() {
@@ -63,6 +68,16 @@
     }
   }
 
+  function highlightWinningCells() {
+    if (!winningLine) return;
+    winningLine.forEach(function (index) {
+      var cell = gridEl.querySelector('[data-index="' + index + '"]');
+      if (cell) {
+        cell.classList.add('win');
+      }
+    });
+  }
+
   function handleCellClick(evt) {
     var cell = evt.target;
     if (cell.classList.contains('cell') && !cell.classList.contains('taken') && !gameOver) {
@@ -75,6 +90,7 @@
       var winner = getWinner(board);
       if (winner) {
         gameOver = true;
+        highlightWinningCells();
       } else if (isDraw(board)) {
         gameOver = true;
       } else {

@@ -70,6 +70,12 @@ h1 {
   color: #0f3460;
 }
 
+.cell.win {
+  background: #2dce89;
+  border-color: #2dce89;
+  box-shadow: 0 0 12px rgba(45, 206, 137, 0.8);
+}
+
 .restart {
   padding: 0.6rem 1.25rem;
   font-size: 1rem;
